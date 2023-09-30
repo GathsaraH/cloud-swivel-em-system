@@ -9,6 +9,7 @@ import { UpdateEmployeeDto } from "./dto/update-employee.dto";
 import { InjectRepository } from "@nestjs/typeorm";
 import { EmployeeEntity } from "./entities/employee.entity";
 import { Repository } from "typeorm";
+import { SearchTypeEnum } from "./types/types";
 
 @Injectable()
 export class EmployeeService {
@@ -41,16 +42,16 @@ export class EmployeeService {
   async findAllEmployee(searchTerm: string): Promise<EmployeeEntity[]> {
     try {
       this.logger.debug(`Get all employee`);
-      const query = await this.employeeRepository
-        .createQueryBuilder("employee")
-        .orderBy("employee.updatedAt", "DESC");
-      if (searchTerm) {
+      const query = this.employeeRepository.createQueryBuilder("employee");
+      if (searchTerm !== SearchTypeEnum.NO_QUERY) {
+        console.log(searchTerm);
         query.where(
-          "employee.firstName LIKE :searchTerm OR employee.lastName LIKE :searchTerm OR employee.email LIKE :searchTerm",
-          { searchTerm: `%${searchTerm}%` }
+          "LOWER(employee.firstName) LIKE LOWER(:searchTerm) OR LOWER(employee.lastName) LIKE LOWER(:searchTerm) OR LOWER(employee.email) LIKE LOWER(:searchTerm) OR LOWER(employee.phoneNumber) LIKE LOWER(:searchTerm)",
+          { searchTerm: `%${searchTerm.toLowerCase()}%` }
         );
       }
-      return query.getMany();
+      query.orderBy("employee.updatedAt", "DESC");
+      return await query.getMany();
     } catch (error) {
       this.logger.debug(`Error while get all employee ${error.message}`);
       throw new HttpException(error.message, error.status ?? 400);
@@ -83,7 +84,7 @@ export class EmployeeService {
     }
   }
 
-  async deleteEmployee(id: string):Promise<void> {
+  async deleteEmployee(id: string): Promise<void> {
     try {
       this.logger.debug(`Delete employee with id ${id}`);
       const employee = await this.employeeRepository.findOne({
