@@ -1,6 +1,7 @@
 import { ApiProperty, PartialType } from "@nestjs/swagger";
 import { CreateEmployeeDto } from "./create-employee.dto";
-import { IsOptional, IsString } from "class-validator";
+import { IsEnum, IsOptional, IsString } from "class-validator";
+import { GenderEnum } from "../types/types";
 
 export class UpdateEmployeeDto extends PartialType(CreateEmployeeDto) {
   @ApiProperty({
@@ -40,9 +41,9 @@ export class UpdateEmployeeDto extends PartialType(CreateEmployeeDto) {
     default: "male",
     example: "male",
   })
-  @IsString()
+  @IsEnum(GenderEnum)
   @IsOptional()
-  gender: string;
+  gender: GenderEnum;
   @ApiProperty({
     required: false,
     description: "Employee phone number",

@@ -43,8 +43,8 @@ export class EmployeeController {
     },
   })
   @ApiConsumes('application/json')
-  async create(@Body() createEmployeeDto: CreateEmployeeDto) {
-    return this.employeeService.create(createEmployeeDto);
+  async createEmployee(@Body() createEmployeeDto: CreateEmployeeDto) {
+    return this.employeeService.createEmployee(createEmployeeDto);
   }
 
   @Get()

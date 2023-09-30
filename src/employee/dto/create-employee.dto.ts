@@ -1,5 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsNotEmpty, IsString } from "class-validator";
+import { IsEnum, IsNotEmpty, IsString } from "class-validator";
+import { GenderEnum } from "../types/types";
 
 export class CreateEmployeeDto {
   @ApiProperty({
@@ -39,9 +40,9 @@ export class CreateEmployeeDto {
     default: "male",
     example: "male",
   })
-  @IsString()
+  @IsEnum(GenderEnum)
   @IsNotEmpty()
-  gender: string;
+  gender: GenderEnum;
   @IsString()
   @IsNotEmpty()
   @ApiProperty({
