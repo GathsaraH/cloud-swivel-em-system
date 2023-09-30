@@ -83,7 +83,7 @@ export class EmployeeService {
     }
   }
 
-  async deleteEmployee(id: string) {
+  async deleteEmployee(id: string):Promise<void> {
     try {
       this.logger.debug(`Delete employee with id ${id}`);
       const employee = await this.employeeRepository.findOne({

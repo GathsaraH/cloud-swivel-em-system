@@ -8,6 +8,7 @@ import {
   Delete,
   HttpCode,
   Query,
+  Put,
 } from "@nestjs/common";
 import { EmployeeService } from "./employee.service";
 import { CreateEmployeeDto } from "./dto/create-employee.dto";
@@ -56,7 +57,7 @@ export class EmployeeController {
   async createEmployee(
     @Body() createEmployeeDto: CreateEmployeeDto
   ): Promise<void> {
-    return this.employeeService.createEmployee(createEmployeeDto);
+    await this.employeeService.createEmployee(createEmployeeDto);
   }
 
   @Get("all")
@@ -90,7 +91,7 @@ export class EmployeeController {
     return this.employeeService.findAllEmployee(searchTerm);
   }
 
-  @Patch("edit/:employeeId")
+  @Put("edit/:employeeId")
   @HttpCode(200)
   @ApiOperation({
     summary: "Update employee",
@@ -119,10 +120,10 @@ export class EmployeeController {
     @Param("employeeId") employeeId: string,
     @Body() updateEmployeeDto: UpdateEmployeeDto
   ): Promise<void> {
-    return this.employeeService.updateEmployee(employeeId, updateEmployeeDto);
+    await this.employeeService.updateEmployee(employeeId, updateEmployeeDto);
   }
 
-  @Delete("delete:/employeeId")
+  @Delete("delete/:employeeId")
   @HttpCode(200)
   @ApiOperation({
     summary: "Delete employee",
@@ -147,7 +148,7 @@ export class EmployeeController {
   })
   @ApiConsumes("application/json")
   @ApiParam({ name: "employeeId", required: true, type: "string" })
-  deleteEmployee(@Param("employeeId") employeeId: string) {
-    return this.employeeService.deleteEmployee(employeeId);
+  async deleteEmployee(@Param("employeeId") employeeId: string): Promise<void> {
+    await this.employeeService.deleteEmployee(employeeId);
   }
 }
