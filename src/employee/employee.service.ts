@@ -20,25 +20,37 @@ export class EmployeeService {
   async createEmployee(dto: CreateEmployeeDto): Promise<void> {
     try {
       this.logger.debug(`Creating employee with data ${JSON.stringify(dto)}`);
-      this.employeeRepository.create(
-        await this.employeeRepository.save({
+      await this.employeeRepository
+        .createQueryBuilder("employee")
+        .insert()
+        .into(EmployeeEntity)
+        .values({
           email: dto.email,
           firstName: dto.firstName,
           lastName: dto.lastName,
           gender: dto.gender,
           phoneNumber: dto.phoneNumber,
         })
-      );
+        .execute();
     } catch (error) {
       this.logger.debug(`Error while creating employee ${error.message}`);
       throw new HttpException(error.message, error.status ?? 400);
     }
   }
 
-  async findAllEmployee(): Promise<EmployeeEntity[]> {
+  async findAllEmployee(searchTerm: string): Promise<EmployeeEntity[]> {
     try {
       this.logger.debug(`Get all employee`);
-      return this.employeeRepository.find();
+      const query = await this.employeeRepository
+        .createQueryBuilder("employee")
+        .orderBy("employee.updatedAt", "DESC");
+      if (searchTerm) {
+        query.where(
+          "employee.firstName LIKE :searchTerm OR employee.lastName LIKE :searchTerm OR employee.email LIKE :searchTerm",
+          { searchTerm: `%${searchTerm}%` }
+        );
+      }
+      return query.getMany();
     } catch (error) {
       this.logger.debug(`Error while get all employee ${error.message}`);
       throw new HttpException(error.message, error.status ?? 400);

@@ -7,6 +7,7 @@ import {
   Param,
   Delete,
   HttpCode,
+  Query,
 } from "@nestjs/common";
 import { EmployeeService } from "./employee.service";
 import { CreateEmployeeDto } from "./dto/create-employee.dto";
@@ -17,6 +18,7 @@ import {
   ApiConsumes,
   ApiOperation,
   ApiParam,
+  ApiQuery,
   ApiTags,
 } from "@nestjs/swagger";
 import { EmployeeEntity } from "./entities/employee.entity";
@@ -81,8 +83,11 @@ export class EmployeeController {
     },
   })
   @ApiConsumes("application/json")
-  async findAllEmployee(): Promise<EmployeeEntity[]> {
-    return this.employeeService.findAllEmployee();
+  @ApiQuery({ name: "searchTerm", required: false, type: "string" })
+  async findAllEmployee(
+    @Query("searchTerm") searchTerm: string
+  ): Promise<EmployeeEntity[]> {
+    return this.employeeService.findAllEmployee(searchTerm);
   }
 
   @Patch("edit/:employeeId")
