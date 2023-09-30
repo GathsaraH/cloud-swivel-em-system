@@ -24,7 +24,7 @@ async function bootstrap() {
   setupSwagger(app);
   await app.listen(configService.get("app.port"), () => {
     console.log(
-      `SwivelTech Employee Management System is running at  : ${configService.get(
+      `SwivelTech Employee Management System is running at : ${configService.get(
         "app.port"
       )}`
     );

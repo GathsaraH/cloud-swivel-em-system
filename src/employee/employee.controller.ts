@@ -11,7 +11,15 @@ import {
 import { EmployeeService } from "./employee.service";
 import { CreateEmployeeDto } from "./dto/create-employee.dto";
 import { UpdateEmployeeDto } from "./dto/update-employee.dto";
-import { ApiBadRequestResponse, ApiBody, ApiConsumes, ApiOperation, ApiTags } from "@nestjs/swagger";
+import {
+  ApiBadRequestResponse,
+  ApiBody,
+  ApiConsumes,
+  ApiOperation,
+  ApiParam,
+  ApiTags,
+} from "@nestjs/swagger";
+import { EmployeeEntity } from "./entities/employee.entity";
 
 @ApiTags("Employee")
 @Controller("employee")
@@ -27,46 +35,114 @@ export class EmployeeController {
   })
   @ApiBadRequestResponse({
     status: 400,
-    description: 'something went wrong',
+    description: "something went wrong",
     schema: {
-      type: 'object',
+      type: "object",
       properties: {
         status: {
-          type: 'string',
-          example: 'error',
+          type: "string",
+          example: "error",
         },
         error: {
-          type: 'array',
+          type: "array",
           example: [],
         },
       },
     },
   })
-  @ApiConsumes('application/json')
-  async createEmployee(@Body() createEmployeeDto: CreateEmployeeDto) {
+  @ApiConsumes("application/json")
+  async createEmployee(
+    @Body() createEmployeeDto: CreateEmployeeDto
+  ): Promise<void> {
     return this.employeeService.createEmployee(createEmployeeDto);
   }
 
-  @Get()
-  findAll() {
-    return this.employeeService.findAll();
+  @Get("all")
+  @HttpCode(200)
+  @ApiOperation({
+    summary: "Get all employee",
+    description: "This api is used to get all employee",
+  })
+  @ApiBadRequestResponse({
+    status: 400,
+    description: "something went wrong",
+    schema: {
+      type: "object",
+      properties: {
+        status: {
+          type: "string",
+          example: "error",
+        },
+        error: {
+          type: "array",
+          example: [],
+        },
+      },
+    },
+  })
+  @ApiConsumes("application/json")
+  async findAllEmployee(): Promise<EmployeeEntity[]> {
+    return this.employeeService.findAllEmployee();
   }
 
-  @Get(":id")
-  findOne(@Param("id") id: string) {
-    return this.employeeService.findOne(+id);
-  }
-
-  @Patch(":id")
-  update(
-    @Param("id") id: string,
+  @Patch("edit/:employeeId")
+  @HttpCode(200)
+  @ApiOperation({
+    summary: "Update employee",
+    description: "This api is used to update employee",
+  })
+  @ApiBadRequestResponse({
+    status: 400,
+    description: "something went wrong",
+    schema: {
+      type: "object",
+      properties: {
+        status: {
+          type: "string",
+          example: "error",
+        },
+        error: {
+          type: "array",
+          example: [],
+        },
+      },
+    },
+  })
+  @ApiConsumes("application/json")
+  @ApiParam({ name: "employeeId", required: true, type: "string" })
+  async updateEmployee(
+    @Param("employeeId") employeeId: string,
     @Body() updateEmployeeDto: UpdateEmployeeDto
-  ) {
-    return this.employeeService.update(+id, updateEmployeeDto);
+  ): Promise<void> {
+    return this.employeeService.updateEmployee(employeeId, updateEmployeeDto);
   }
 
-  @Delete(":id")
-  remove(@Param("id") id: string) {
-    return this.employeeService.remove(+id);
+  @Delete("delete:/employeeId")
+  @HttpCode(200)
+  @ApiOperation({
+    summary: "Delete employee",
+    description: "This api is used to delete employee",
+  })
+  @ApiBadRequestResponse({
+    status: 400,
+    description: "something went wrong",
+    schema: {
+      type: "object",
+      properties: {
+        status: {
+          type: "string",
+          example: "error",
+        },
+        error: {
+          type: "array",
+          example: [],
+        },
+      },
+    },
+  })
+  @ApiConsumes("application/json")
+  @ApiParam({ name: "employeeId", required: true, type: "string" })
+  deleteEmployee(@Param("employeeId") employeeId: string) {
+    return this.employeeService.deleteEmployee(employeeId);
   }
 }
