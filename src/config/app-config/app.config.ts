@@ -1,7 +1,7 @@
-import { registerAs } from '@nestjs/config';
-import { applicationConfig } from './config';
+import { registerAs } from "@nestjs/config";
+import { applicationConfig } from "./config";
 
-export default registerAs('app', () => ({
+export default registerAs("app", () => ({
   // General Config
   nodeEnv: applicationConfig.nodeEnv,
   name: applicationConfig.appName,
@@ -10,7 +10,7 @@ export default registerAs('app', () => ({
   fallbackLanguage: applicationConfig.appFallBackLanguage,
   frontendUrl: applicationConfig.frontendUrl,
   // Database Config
-  databaseType: 'postgres',
+  databaseType: "postgres",
   databaseHost: applicationConfig.database.host,
   databasePort: applicationConfig.database.post,
   databasePassword: applicationConfig.database.password,
@@ -20,5 +20,6 @@ export default registerAs('app', () => ({
   databaseMaxConnection: applicationConfig.database.maxConnection,
   databaseSslEnabled: applicationConfig.database.sslEnabled,
   databaseRejectUnauthorized: applicationConfig.database.rejectUnauthorized,
-
+  // Cors Config
+  corsOrigin: applicationConfig.cors.corsOrigin,
 }));

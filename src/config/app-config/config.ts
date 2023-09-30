@@ -19,5 +19,8 @@ export const applicationConfig = {
     sslEnabled: process.env[`DATABASE_SSL_ENABLED`],
     rejectUnauthorized: process.env[`DATABASE_REJECT_UNAUTHORIZED`],
     nodeTlsRejectUnauthorized: process.env[`NODE_TLS_REJECT_UNAUTHORIZED`],
+  },
+  cors: {
+    corsOrigin: process.env[`CORS_ORIGIN`],
   }
 };
