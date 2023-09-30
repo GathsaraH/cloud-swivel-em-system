@@ -1,4 +1,56 @@
-import { PartialType } from '@nestjs/swagger';
-import { CreateEmployeeDto } from './create-employee.dto';
+import { ApiProperty, PartialType } from "@nestjs/swagger";
+import { CreateEmployeeDto } from "./create-employee.dto";
+import { IsOptional, IsString } from "class-validator";
 
-export class UpdateEmployeeDto extends PartialType(CreateEmployeeDto) {}
+export class UpdateEmployeeDto extends PartialType(CreateEmployeeDto) {
+  @ApiProperty({
+    required: false,
+    description: "Employee first name",
+    type: String,
+    default: "John",
+    example: "John",
+  })
+  @IsString()
+  @IsOptional()
+  firstName: string;
+  @ApiProperty({
+    required: false,
+    description: "Employee last name",
+    type: String,
+    default: "Doe",
+    example: "Doe",
+  })
+  @IsString()
+  @IsOptional()
+  lastName: string;
+  @ApiProperty({
+    required: false,
+    description: "Employee email",
+    type: String,
+    default: "user@user.com",
+    example: "user@user.com",
+  })
+  @IsString()
+  @IsOptional()
+  email: string;
+  @ApiProperty({
+    required: false,
+    description: "Employee gender",
+    type: String,
+    default: "male",
+    example: "male",
+  })
+  @IsString()
+  @IsOptional()
+  gender: string;
+  @ApiProperty({
+    required: false,
+    description: "Employee phone number",
+    type: String,
+    default: "071624947",
+    example: "071624947",
+  })
+  @IsString()
+  @IsOptional()
+  phoneNumber: string;
+}
