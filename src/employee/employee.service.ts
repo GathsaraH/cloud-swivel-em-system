@@ -44,7 +44,6 @@ export class EmployeeService {
       this.logger.debug(`Get all employee`);
       const query = this.employeeRepository.createQueryBuilder("employee");
       if (searchTerm !== SearchTypeEnum.NO_QUERY) {
-        console.log(searchTerm);
         query.where(
           "LOWER(employee.firstName) LIKE LOWER(:searchTerm) OR LOWER(employee.lastName) LIKE LOWER(:searchTerm) OR LOWER(employee.email) LIKE LOWER(:searchTerm) OR LOWER(employee.phoneNumber) LIKE LOWER(:searchTerm)",
           { searchTerm: `%${searchTerm.toLowerCase()}%` }
