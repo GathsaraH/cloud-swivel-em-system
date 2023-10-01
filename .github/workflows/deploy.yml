@@ -21,11 +21,6 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: 22
 
-      - name: Debug
-        run: |
-          echo "Server Path: ${{ secrets.SERVER_PATH }}"
-          # Add more debugging output as needed
-
       - name: Deploy code
         run: |
-          cd ${{ secrets.SERVER_PATH }} && git pull && git checkout prod && git pull origin prod && npm install && npm run build && pm2 restart cloud-swivel-em-system
+          cd /var/www/swivel/cloud-swivel-em-system/ && git pull && git checkout prod && git pull origin prod && npm install && npm run build && pm2 restart cloud-swivel-em-system
