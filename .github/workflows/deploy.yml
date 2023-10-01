@@ -23,7 +23,7 @@ jobs:
 
       - name: Deploy code
         run: |
-          ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USERNAME }}@${{ secrets.SERVER_IP }} "cd ${{ secrets.SERVER_PATH }} && git pull && git checkout prod && git pull origin production && npm install && npm run build && pm2 restart your-app-name"
+          ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USERNAME }}@${{ secrets.SERVER_IP }} "cd ${{ secrets.SERVER_PATH }} && git pull && git checkout prod && git pull origin prod && npm install && npm run build && pm2 restart cloud-swivel-em-system"
 
 
 
